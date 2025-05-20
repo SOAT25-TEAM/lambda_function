@@ -2,11 +2,11 @@ import { APIGatewayProxyHandler } from "aws-lambda";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 
+const SECRET = process.env.JWT_SECRET ?? "";
+const BASE_URL = process.env.BASE_URL ?? "";
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     const cpf = event.pathParameters?.cpf;
-    const SECRET = process.env.JWT_SECRET ?? "";
-    const BASE_URL = process.env.BASE_URL ?? "";
 
     if (!cpf) {
       return {
@@ -38,6 +38,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({
         message: "Erro!",
         error: `Erro => ${error}`,
+        base_url: `http://${BASE_URL}/user`,
       }),
     };
   }
