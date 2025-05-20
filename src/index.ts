@@ -5,6 +5,8 @@ import axios from "axios";
 const SECRET = process.env.JWT_SECRET ?? "";
 const BASE_URL = process.env.BASE_URL ?? "";
 export const handler: APIGatewayProxyHandler = async (event) => {
+  console.log(event.pathParameters?.cpf);
+
   try {
     const cpf = event.pathParameters?.cpf;
 
