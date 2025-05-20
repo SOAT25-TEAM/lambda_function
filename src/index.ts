@@ -33,7 +33,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   } catch (error) {
     return {
       statusCode: 500,
-      error: `Error => ${error}`,
+      body: JSON.stringify({
+        message: "Erro!",
+        error: `Erro => ${error}`,
+      }),
     };
   }
 };
