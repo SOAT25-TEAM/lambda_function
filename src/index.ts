@@ -19,11 +19,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
   const token = jwt.sign({ cpf }, SECRET, { expiresIn: "5m" });
 
-  const response = await axios.get(`http://${BASE_URL}/user/${cpf}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  // const response = await axios.get(`http://${BASE_URL}/user/${cpf}`, {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // });
 
   return {
     statusCode: 200,
@@ -31,7 +31,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       message: "Hello from Douglas to Lambda!",
       CPF: cpf ?? "Nenhum CPF enviado",
       baseurl: `http://${BASE_URL}/user/${cpf}`,
-      response: response.data,
+      // response: response.data,
     }),
   };
   // } catch (error) {
