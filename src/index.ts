@@ -6,6 +6,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     const cpf = event.pathParameters?.cpf;
     const SECRET = process.env.JWT_SECRET ?? "";
+    const BASE_URL = process.env.BASE_URL ?? "";
 
     if (!cpf) {
       return {
@@ -16,7 +17,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const token = jwt.sign({ cpf }, SECRET, { expiresIn: "5m" });
 
-    const response = await axios.get(`http://${process.env.BASE_URL}/user`, {
+    const response = await axios.get(`http://${BASE_URL}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,6 +28,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       body: JSON.stringify({
         message: "Hello from Douglas to Lambda!",
         CPF: cpf ?? "Nenhum CPF enviado",
+        baseurl: `http://${BASE_URL}/user`,
         response: response.data,
       }),
     };
