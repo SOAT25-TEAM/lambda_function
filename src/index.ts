@@ -15,10 +15,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     };
   }
 
-  const token = jwt.sign({ cpf }, SECRET, { expiresIn: "5m" });
+  const token = jwt.sign({ cpf }, SECRET, { expiresIn: "120m" });
 
   try {
-    const response = await axios.get(`http://${BASE_URL}/user/${cpf}`, {
+    const response = await axios.get(`http://${BASE_URL}/user/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,8 +27,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return {
       statusCode: response.status,
       body: JSON.stringify({
-        message: "Usuário encontrado",
-        CPF: cpf,
         response: response.data,
       }),
     };
