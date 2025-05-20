@@ -1,8 +1,13 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
+  const cpf = event.queryStringParameters?.cpf;
+
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: "Hello from Douglas to Lambda!" }),
+    body: JSON.stringify({
+      message: "Hello from Douglas to Lambda!",
+      CPF: cpf ?? "Nenhum CPF enviado",
+    }),
   };
 };
