@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     const token = jwt.sign({ cpf }, SECRET, { expiresIn: "5m" });
 
-    const response = await axios.get("http://process.env.BASE_URL/user", {
+    const response = await axios.get(`http://${process.env.BASE_URL}/user`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
