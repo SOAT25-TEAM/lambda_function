@@ -1,5 +1,9 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import jwt from "jsonwebtoken";
+import jwt, {
+  JsonWebTokenError,
+  NotBeforeError,
+  TokenExpiredError,
+} from "jsonwebtoken";
 import axios from "axios";
 
 const SECRET = process.env.JWT_SECRET ?? "";
@@ -24,13 +28,28 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       },
     });
 
+    const responseToken = response.data.user ?? "";
+    const decoded = jwt.verify(responseToken, SECRET);
+
     return {
       statusCode: response.status,
-      body: JSON.stringify({
-        response: response.data,
-      }),
+      body: decoded as string,
     };
   } catch (error: any) {
+    if (
+      error instanceof TokenExpiredError ||
+      error instanceof NotBeforeError ||
+      error instanceof JsonWebTokenError
+    ) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({
+          message: "Token inválido ou expirado",
+          error: error.message,
+        }),
+      };
+    }
+
     if (axios.isAxiosError(error)) {
       const status = error.response?.status ?? 500;
       const errorMessage =
