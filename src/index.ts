@@ -1,9 +1,5 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import jwt, {
-  JsonWebTokenError,
-  NotBeforeError,
-  TokenExpiredError,
-} from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import axios from "axios";
 
 const SECRET = process.env.JWT_SECRET ?? "";
@@ -37,9 +33,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     };
   } catch (error: any) {
     if (
-      error instanceof TokenExpiredError ||
-      error instanceof NotBeforeError ||
-      error instanceof JsonWebTokenError
+      error instanceof jwt.TokenExpiredError ||
+      error instanceof jwt.NotBeforeError ||
+      error instanceof jwt.JsonWebTokenError
     ) {
       return {
         statusCode: 401,
