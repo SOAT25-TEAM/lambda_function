@@ -29,9 +29,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return {
       statusCode: response.status,
-      body: decoded as string,
+      body: JSON.stringify(decoded), // Corrigido aqui
     };
   } catch (error: any) {
+    console.error("Erro na Lambda:", error); // Log do erro para o CloudWatch
+
     if (
       error instanceof jwt.TokenExpiredError ||
       error instanceof jwt.NotBeforeError ||
