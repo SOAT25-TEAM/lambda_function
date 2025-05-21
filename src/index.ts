@@ -29,7 +29,10 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return {
       statusCode: response.status,
-      body: { user: JSON.stringify({ decoded }), token: decoded },
+      body: JSON.stringify({
+        user: decoded,
+        token: responseToken,
+      }),
     };
   } catch (error: any) {
     console.error("Erro na Lambda:", error);
