@@ -25,11 +25,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     });
 
     const responseToken = response.data.user ?? "";
-    const decoded = JSON.parse(jwt.verify(responseToken, SECRET) as string);
+    const decoded = jwt.verify(responseToken, SECRET);
 
     return {
       statusCode: response.status,
-      body: JSON.stringify({ ...decoded, token: responseToken }),
+      body: { user: JSON.stringify({ decoded }), token: decoded },
     };
   } catch (error: any) {
     console.error("Erro na Lambda:", error);
