@@ -25,14 +25,14 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     });
 
     const responseToken = response.data.user ?? "";
-    const decoded = jwt.verify(responseToken, SECRET);
+    const decoded = JSON.parse(jwt.verify(responseToken, SECRET) as string);
 
     return {
       statusCode: response.status,
-      body: JSON.stringify(decoded), // Corrigido aqui
+      body: JSON.stringify({ ...decoded, token: responseToken }),
     };
   } catch (error: any) {
-    console.error("Erro na Lambda:", error); // Log do erro para o CloudWatch
+    console.error("Erro na Lambda:", error);
 
     if (
       error instanceof jwt.TokenExpiredError ||
